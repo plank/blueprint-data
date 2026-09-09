@@ -79,6 +79,24 @@ it('maps to-one relationships to nullable Data properties', function () {
         ->toContain('public ?AuthorData $author = null,');
 });
 
+it('reports generated files as [type, path] tuples for build output', function () {
+    $base = sys_get_temp_dir().'/blueprint-data-'.uniqid();
+    config()->set('blueprint_data.output_path', $base.'/app/Data');
+
+    $tree = buildTree(__DIR__.'/fixtures/draft.yaml');
+
+    $output = (new DataGenerator(new Filesystem))->output($tree);
+
+    expect($output)->toHaveKey('created');
+
+    foreach ($output['created'] as $entry) {
+        expect($entry)
+            ->toBeArray()
+            ->and($entry[0])->toBe('Data')
+            ->and($entry[1])->toEndWith('Data.php');
+    }
+});
+
 it('maps to-many relationships to annotated collections', function () {
     $files = generate(__DIR__.'/fixtures/draft.yaml');
     $author = $files['app/Data/AuthorData.php'];
