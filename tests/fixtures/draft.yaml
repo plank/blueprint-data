@@ -1,0 +1,21 @@
+models:
+  Author:
+    name: string
+    bio: text nullable
+    born_at: date nullable
+    relationships:
+      hasMany: Book
+
+  Book:
+    title: string
+    price: decimal:8,2
+    published: boolean
+    published_at: datetime nullable
+    metadata: json nullable
+    author_id: id foreign
+    relationships:
+      belongsTo: Author
+      belongsToMany: Tag
+
+  Tag:
+    label: string
