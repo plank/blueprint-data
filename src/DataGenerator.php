@@ -43,7 +43,7 @@ class DataGenerator implements Generator
 
             $this->files->put($path, $this->populateStub($stub, $model, $tree));
 
-            $output[$created ? 'created' : 'updated'][] = $path;
+            $output[$created ? 'created' : 'updated'][] = ['Data', $path];
         }
 
         return $output;
